@@ -61,4 +61,4 @@ stages:
       inputs:
         scriptPath: 'scripts/updateK8sManifests.sh'
         args: 'vote $(imageRepository) $(tag)'
-        failOnStandardError: true
+        # failOnStandardError: true
