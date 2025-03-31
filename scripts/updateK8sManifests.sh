@@ -6,8 +6,7 @@ sed -i 's/\r//g' /home/azureuser/myagent/_work/2/s/scripts/updateK8sManifests.sh
 set -x
 
 # Set the repository URL
-REPO_URL="
-https://53rP8JX2FEA6ZsmSaItzWp5CboUhxn8IIzx7flJoy8RBXphHexrYJQQJ99BCACAAAAAAAAAAAAASAZDO28yD@dev.azure.com/mayurdevopsorg/voting-app/_git/voting-app"
+REPO_URL="https://53rP8JX2FEA6ZsmSaItzWp5CboUhxn8IIzx7flJoy8RBXphHexrYJQQJ99BCACAAAAAAAAAAAAASAZDO28yD@dev.azure.com/mayurdevopsorg/voting-app/_git/voting-app"
 
 # Clone the git repository into the /tmp directory
 git clone "$REPO_URL" /tmp/temp_repo
