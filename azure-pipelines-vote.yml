@@ -44,7 +44,7 @@ stages:
     displayName: Push
     steps:
     - task: Docker@2
-      displayName: Build the image
+      displayName: push the image
       inputs:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
