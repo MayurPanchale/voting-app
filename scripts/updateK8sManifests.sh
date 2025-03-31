@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Convert Windows line endings to Unix line endings for the script itself
+sed -i 's/\r//g' "$0"  # This modifies the script file in-place
+
 set -x
 
 # Set the repository URL
@@ -30,7 +33,7 @@ git add .
 git commit -m "Update Kubernetes manifest"
 
 # Push the changes back to the repository
-git push origin main
+git push
 
 # Cleanup: remove the temporary directory
 rm -rf /tmp/temp_repo
