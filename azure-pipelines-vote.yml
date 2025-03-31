@@ -3,15 +3,14 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
- paths:
-   include:
-     - vote/*
+  paths:
+    include:
+      - vote/*
 
 resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '2dd1d207-da70-4222-bf84-1957a9116775'
   imageRepository: 'votingapp'
   containerRegistry: 'mayurazurecicd.azurecr.io'
@@ -19,7 +18,7 @@ variables:
   tag: '$(Build.BuildId)'
 
 pool:
- name: 'azureagent' 
+  name: 'azureagent' 
 
 stages:
 - stage: Build
@@ -44,7 +43,7 @@ stages:
     displayName: Push
     steps:
     - task: Docker@2
-      displayName: push the image
+      displayName: Push the image
       inputs:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
@@ -57,8 +56,23 @@ stages:
   - job: Update
     displayName: Update
     steps:
+    # ✅ Convert script to Unix format (Fix line-ending issue)
+    - script: |
+        sudo apt-get install -y dos2unix
+        dos2unix $(Build.SourcesDirectory)/scripts/updateK8sManifests.sh
+      displayName: "Convert script to Unix format"
+
+    # ✅ Make script executable (Fix permission issue)
+    - script: |
+        chmod +x $(Build.SourcesDirectory)/scripts/updateK8sManifests.sh
+      displayName: "Make script executable"
+
+    # ✅ Debug: Check if deployment file exists
+    - script: ls -lR $(Build.SourcesDirectory)/k8s-specifications
+      displayName: "List Kubernetes YAML files"
+
+    # ✅ Run the update script
     - task: ShellScript@2
       inputs:
-        scriptPath: 'scripts/updateK8sManifests.sh'
+        scriptPath: '$(Build.SourcesDirectory)/scripts/updateK8sManifests.sh'
         args: 'vote $(imageRepository) $(tag)'
-        # failOnStandardError: true
