@@ -14,8 +14,8 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/result/Dockerfile'
   tag: '$(Build.BuildId)'
 
- pool:
-  name: 'azure-agent'
+pool:
+  name: 'azureagent'
 
 stages:
 - stage: Build
