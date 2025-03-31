@@ -1,12 +1,10 @@
-#!/bin/bash
 
-# Convert Windows line endings to Unix line endings for the script itself
-sed -i 's/\r//g' "$0"  # This modifies the script file in-place
+#!/bin/bash
 
 set -x
 
 # Set the repository URL
-REPO_URL="https://53rP8JX2FEA6ZsmSaItzWp5CboUhxn8IIzx7flJoy8RBXphHexrYJQQJ99BCACAAAAAAAAAAAAASAZDO28yD@dev.azure.com/mayurdevopsorg/voting-app/_git/voting-app"
+REPO_URL="https://53rP8JX2FEA6ZsmSaItzWp5CboUhxn8IIzx7flJoy8RBXphHexrYJQQJ99BCACAAAAAAAAAAAAASAZDO28yD@dev.azure.com/<AZURE-DEVOPS-ORG-NAME>/voting-app/_git/voting-app"
 
 # Clone the git repository into the /tmp directory
 git clone "$REPO_URL" /tmp/temp_repo
@@ -14,17 +12,9 @@ git clone "$REPO_URL" /tmp/temp_repo
 # Navigate into the cloned repository directory
 cd /tmp/temp_repo
 
-# Check if the k8s manifest file exists
-if [ -f "k8s-specifications/$1-deployment.yaml" ]; then
-  echo "File exists, proceeding with update..."
-else
-  echo "File does not exist!"
-  exit 1
-fi
-
 # Make changes to the Kubernetes manifest file(s)
 # For example, let's say you want to change the image tag in a deployment.yaml file
-sed -i "s|image:.*|image: mayurazurecicd.azurecr.io/$2:$3|g" k8s-specifications/$1-deployment.yaml
+sed -i "s|image:.*|image: mayurazurecicd/$2:$3|g" k8s-specifications/$1-deployment.yaml
 
 # Add the modified files
 git add .
