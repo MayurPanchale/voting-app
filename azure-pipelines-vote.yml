@@ -51,11 +51,11 @@ stages:
         command: 'push'
         tags: '$(tag)'
 
-- stage: update
-  displayName: update
+- stage: Update
+  displayName: Update 
   jobs:
-  - job: update
-    displayName: update
+  - job: Update
+    displayName: Update
     steps:
     - task: ShellScript@2
       inputs:
