@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Convert Windows line endings to Unix line endings
-sed -i 's/\r//g' /home/azureuser/myagent/_work/2/s/scripts/updateK8sManifests.sh
-
 set -x
 
 # Set the repository URL
@@ -13,6 +10,14 @@ git clone "$REPO_URL" /tmp/temp_repo
 
 # Navigate into the cloned repository directory
 cd /tmp/temp_repo
+
+# Check if the k8s manifest file exists
+if [ -f "k8s-specifications/$1-deployment.yaml" ]; then
+  echo "File exists, proceeding with update..."
+else
+  echo "File does not exist!"
+  exit 1
+fi
 
 # Make changes to the Kubernetes manifest file(s)
 # For example, let's say you want to change the image tag in a deployment.yaml file
