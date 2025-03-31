@@ -1,0 +1,48 @@
+trigger:
+ paths:
+   include:
+     - result/*
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '65e48cb1-bd24-469e-976a-dfd595c8b830'
+  imageRepository: 'resultapp'
+  containerRegistry: 'mayurazurecicd.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/result/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+ pool:
+  name: 'azure-agent'
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Build the image
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: 'result/Dockerfile'
+        tags: '$(tag)'
+
+- stage: Push
+  displayName: Push
+  jobs:
+  - job: Push
+    displayName: Push
+    steps:
+    - task: Docker@2
+      displayName: Push the image
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: '$(tag)'
