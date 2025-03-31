@@ -22,7 +22,7 @@ git add .
 git commit -m "Update Kubernetes manifest"
 
 # Push the changes back to the repository
-git push
+git push origin main
 
 # Cleanup: remove the temporary directory
 rm -rf /tmp/temp_repo
